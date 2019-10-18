@@ -1,0 +1,14 @@
+OMP_API_URL = 'https://api.openmanifestoproject.org' 
+OMP_API_MANIFESTOS_METHOD = 'manifestos'
+OMP_API_PROPOSALS_METHOD = 'proposals'
+TAGGER_API_URL = 'https://api.tipiciudadano.es/labels/extract'
+
+# Select topics from TAGGER API
+TAGGER_BY = [
+        'Calidad democrática'
+        ]
+
+# Add key:value params from Get Manifestos method
+FILTER_MANIFESTOS_BY = {
+        'election_type': 'Generales'
+        }
