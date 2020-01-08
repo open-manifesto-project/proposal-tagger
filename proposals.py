@@ -33,25 +33,28 @@ class ProposalsManager:
                     'election_type': manifesto_ext['election_type'],
                     'geographical_area': manifesto_ext['geographical_area'],
                     'proposal': proposal['body'],
-                    'topic': '',
+                    'topics': [],
                     'tags': []
                     })
             i = i + 1
         return proposals
 
     def export(self, filter_by=''):
-        proposals = [p for p in self.__proposals if filter_by in p['topic']]
+        proposals = [p for p in self.__proposals if filter_by in p['topics']]
+        proposals_exported = list()
         for proposal in proposals:
-            proposal['topic'] = filter_by
-            proposal['tags'] = [
+            proposal_copy = proposal.copy()
+            proposal_copy['topics'] = filter_by
+            proposal_copy['tags'] = [
                     t['tag']
                     for t in proposal['tags']
                     if t['topic'] == filter_by
                     ]
+            proposals_exported.append(proposal_copy)
         file_output = open(slugify(filter_by)+'.json', 'w')
         file_output.write(
                 json.dumps(
-                    proposals,
+                    proposals_exported,
                     ensure_ascii=False,
                     indent=4)
                 )
@@ -66,6 +69,6 @@ class ProposalsManager:
             print("Etiquetando propuesta {} de {}".format(i, total))
             tagger.load_content(proposal['proposal'])
             tagger.tag()
-            proposal['topic'] = tagger.get_topics()
+            proposal['topics'] = tagger.get_topics()
             proposal['tags'] = tagger.get_tags()
             i = i + 1
